@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur la Billeterie !{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h2>Visiteur n°</h2>
+
+        {{ form_start(visitorForm) }}
+
+        {{ form_row(visitorForm.lastName) }}
+        {{ form_row(visitorForm.name) }}
+        {{ form_row(visitorForm.birthDate) }}
+        {{ form_row(visitorForm.country) }}
+        {{ form_row(visitorForm.rate) }}
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+        {{ form_end(visitorForm) }}
+
+    </div>
+
+{% endblock %}

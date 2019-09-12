@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur la Billeterie !{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <h2>Coordonnées de l'acheteur :</h2>
+
+        {{ form_start(buyerForm) }}
+
+        {{ form_row(buyerForm.lastName) }}
+        {{ form_row(buyerForm.name) }}
+        {{ form_row(buyerForm.email) }}
+
+        <h2>Adresse de facturation :</h2>
+        {{ form_row(buyerForm.adress) }}
+        {{ form_row(buyerForm.zipcode) }}
+        {{ form_row(buyerForm.city) }}
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+        {{ form_end(buyerForm) }}
+
+    </div>
+
+{% endblock %}

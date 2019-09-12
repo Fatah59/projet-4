@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Billeterie Musée du Louvre' %}
+
+{%  block body %}
+    <div class="jumbotron text-center">
+        <div class="toto">
+        <h1>Bienvenue sur la billeterie du Musée du Louvre</h1>
+        <a href="{{ path('order') }}" class="button btn btn-primary">Billeterie</a>
+        </div>
+    </div>
+{% endblock %}
