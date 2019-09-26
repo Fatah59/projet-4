@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
+ * @ORM\Table(name="oorder")
  */
 class Order
 {
@@ -16,6 +19,7 @@ class Order
     public function __construct()
     {
         $this->setStatus(self::FILLING);
+        $this->visitors = new ArrayCollection();
     }
 
     /**
@@ -41,9 +45,9 @@ class Order
     private $status;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Visitor", mappedBy="order", orphanRemoval=true)
      */
-    private $nbVisitors;
+    private $visitors;
 
     public function getId(): ?int
     {
@@ -94,6 +98,37 @@ class Order
     public function setNbVisitors(int $nbVisitors): self
     {
         $this->nbVisitors = $nbVisitors;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Visitor[]
+     */
+    public function getVisitors(): Collection
+    {
+        return $this->visitors;
+    }
+
+    public function addVisitor(Visitor $visitor): self
+    {
+        if (!$this->visitors->contains($visitor)) {
+            $this->visitors[] = $visitor;
+            $visitor->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisitor(Visitor $visitor): self
+    {
+        if ($this->visitors->contains($visitor)) {
+            $this->visitors->removeElement($visitor);
+            // set the owning side to null (unless already changed)
+            if ($visitor->getOrder() === $this) {
+                $visitor->setOrder(null);
+            }
+        }
 
         return $this;
     }

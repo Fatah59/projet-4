@@ -4,6 +4,7 @@
 
 {% block body %}
 
+    <section class="section">
     <div class="container">
 
         {{ form_start(orderForm) }}
@@ -13,12 +14,24 @@
                 {{ form_row(orderForm.tourAt, { 'attr': { 'class': 'tourAt'} }) }}
             </div>
         </div>
-        {{ form_row(orderForm.fullday) }}
-        {{ form_row(orderForm.nbVisitors) }}
 
-        <button type="submit" class="btn btn-primary">Valider</button>
-        {{ form_end(orderForm) }}
+        <div class="row">
+            <div class="col-sm-10">
+        {{ form_row(orderForm.fullday) }}
+        </div>
+    </div>
+
+        <div class="row">
+
+            <div class="col-sm-11">
+                <button type="submit" class="btn btn-primary">Valider</button>
+                {{ form_end(orderForm) }}
+            </div>
+
+
+        </div>
 
     </div>
+    </section>
 
 {% endblock %}

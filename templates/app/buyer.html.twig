@@ -4,24 +4,40 @@
 
 {% block body %}
 
-    <div class="container">
+    <section class="section">
 
-        <h2>Coordonnées de l'acheteur :</h2>
+        <div class="container">
 
-        {{ form_start(buyerForm) }}
+            <h2>Coordonnées de l'acheteur :</h2>
 
-        {{ form_row(buyerForm.lastName) }}
-        {{ form_row(buyerForm.name) }}
-        {{ form_row(buyerForm.email) }}
+            <div class="form-group row">
 
-        <h2>Adresse de facturation :</h2>
-        {{ form_row(buyerForm.adress) }}
-        {{ form_row(buyerForm.zipcode) }}
-        {{ form_row(buyerForm.city) }}
+                {{ form_start(buyerForm) }}
+                <div class="col-sm-12">
+                    {{ form_row(buyerForm.lastName) }}
+                </div>
 
-        <button type="submit" class="btn btn-primary">Valider</button>
-        {{ form_end(buyerForm) }}
 
-    </div>
+                {{ form_row(buyerForm.name) }}
+                {{ form_row(buyerForm.email) }}
+
+                <h2>Adresse de facturation :</h2>
+                {{ form_row(buyerForm.adress) }}
+                {{ form_row(buyerForm.zipcode) }}
+                {{ form_row(buyerForm.city) }}
+            </div>
+
+            <div class="row">
+
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </div>
+
+
+
+            {{ form_end(buyerForm) }}
+
+        </div>
+
+    </section>
 
 {% endblock %}

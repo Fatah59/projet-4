@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
+use App\Form\ContactType;
 use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\Visitor;
-use App\Form\VisitorType;
+use App\Form\VisitorsType;
 use App\Entity\Buyer;
 use App\Form\BuyerType;
+use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +18,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
+
+    /**
+     * @var CartService
+     */
+
+    private $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
 
     /**
      * @Route ("/", name="home")
@@ -26,18 +40,20 @@ class AppController extends AbstractController
         return $this->render('pages/home.html.twig');
     }
 
+
     /**
      * @Route("/order", name="order")
      */
 
     public function orderAction(Request $request)
     {
-        $order = new Order();
-        $orderForm = $this->createForm(OrderType::class, $order);
+        $cart = $this->cartService->get() ?? new Order();
+
+        $orderForm = $this->createForm(OrderType::class, $cart);
         $orderForm->handleRequest($request);
 
         if ($orderForm->isSubmitted() && $orderForm->isValid()) {
-            $request->getSession()->set('order', $order);
+            $this->cartService->save($cart);
 
             return $this->redirectToRoute('visitors');
         }
@@ -52,25 +68,24 @@ class AppController extends AbstractController
      */
     public function visitorsAction(Request $request)
     {
-        $order = $request->getSession()->get('order');
+        $cart = $this->cartService->get();
 
-        if (!$order) {
+        if (!$cart) {
             return $this->redirectToRoute('/order');
         }
 
-        $visitor = new Visitor();
-        $visitorForm = $this->createForm(VisitorType::class, $visitor);
-        $visitorForm->handleRequest($request);
-
-        if ($visitorForm->isSubmitted() && $visitorForm->isValid()) {
-            $request->getSession()->set('visitor', $visitor);
+        $visitorsForm = $this->createForm(VisitorsType::class, $cart);
+        $visitorsForm->handleRequest($request);
+        if ($visitorsForm->isSubmitted() && $visitorsForm->isValid()) {
+            dump($cart);
+            $this->cartService->save($cart);
 
             return $this->redirectToRoute('buyer');
         }
 
 
         return $this->render('app/visitors.html.twig', [
-            'visitorForm' => $visitorForm->createView()
+            'visitorForm' => $visitorsForm->createView()
         ]);
     }
 
@@ -81,22 +96,19 @@ class AppController extends AbstractController
 
     public function buyerAction(Request $request)
     {
-        $visitor = $request->getSession()->get('visitor');
+        $cart = $this->cartService->get();
 
-        if (!$visitor) {
+        if (!$cart) {
             return $this->redirectToRoute('/visitors');
         }
 
-        $buyer = new Buyer();
-        $buyerForm = $this->createForm(BuyerType::class, $buyer);
+        $buyerForm = $this->createForm(BuyerType::class, $cart);
         $buyerForm->handleRequest($request);
-
         if ($buyerForm->isSubmitted() && $buyerForm->isValid()) {
-            $request->getSession()->set('visitor', $buyer);
+            $this->cartService->save($cart);
 
             return $this->redirectToRoute('pay');
         }
-
 
         return $this->render('app/buyer.html.twig', [
             'buyerForm' => $buyerForm->createView()
@@ -120,7 +132,20 @@ class AppController extends AbstractController
 
     public function contactAction(Request $request)
     {
-        return $this->render('pages/contact.html.twig');
+        $contact = new Contact();
+        $contactForm = $this->createForm(ContactType::class, $contact);
+        $contactForm->handleRequest($request);
+
+        if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+
+
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('pages/contact.html.twig', [
+            'contactForm' => $contactForm->createView()
+        ]);
+
     }
 
     /**
