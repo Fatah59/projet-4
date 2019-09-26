@@ -37,9 +37,16 @@ class Visitor
     private $country;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="visitors")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $order;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $rate;
+
 
     public function getId(): ?int
     {
@@ -94,12 +101,25 @@ class Visitor
         return $this;
     }
 
-    public function getRate(): ?int
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?Order $order): self
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    public function getRate(): ?bool
     {
         return $this->rate;
     }
 
-    public function setRate(int $rate): self
+    public function setRate(?bool $rate): self
     {
         $this->rate = $rate;
 

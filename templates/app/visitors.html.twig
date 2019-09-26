@@ -4,21 +4,94 @@
 
 {% block body %}
 
-    <div class="container">
+    <section class="section">
 
-        <h2>Visiteur n°</h2>
+        <div class="container">
 
-        {{ form_start(visitorForm) }}
+            <h2>Renseignements visiteur(s)</h2>
 
-        {{ form_row(visitorForm.lastName) }}
-        {{ form_row(visitorForm.name) }}
-        {{ form_row(visitorForm.birthDate) }}
-        {{ form_row(visitorForm.country) }}
-        {{ form_row(visitorForm.rate) }}
+            {{ form_start(visitorForm) }}
+            <div class="form-group row">
+                <div class="col-sm-12">
+                {{ form_widget(visitorForm) }}
+            </div>
 
-        <button type="submit" class="btn btn-primary">Valider</button>
-        {{ form_end(visitorForm) }}
+            </div>
 
-    </div>
+            <div class="row">
+                <div class="col-sm-11">
+
+                <button type="submit" class="btn btn-primary">Valider</button>
+                {{ form_end(visitorForm) }}
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </section>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ parent() }}
+
+        <script>
+            var $collections = $('.collection');
+
+            for (var $collection of $collections) {
+                $collection = $($collection);
+                var $elements = $collection.find('fieldset');
+
+                var $legends = $collection.find('legend');
+                for ($legend of $legends){
+                    $legend = $($legend);
+                    $legend.text('Visiteur');
+                }
+
+                var numCurrent = $elements.length + 1;
+                var prototype = $collection.attr('data-prototype');
+
+                var $addButton = $('<button type="button">Ajouter un visiteur</button>');
+                $collection.after($addButton);
+
+                $addButton.on('click', function(e) {
+                    e.preventDefault();
+
+                    var currentPrototype = prototype
+                        .replace(/__name__label__/g, 'Visiteur')
+                        .replace(/__name__/g, numCurrent);
+
+                    $element = $(currentPrototype);
+
+                    $collection.append($element);
+
+                    removeButton($element);
+
+                    numCurrent++;
+                });
+
+
+                for (var $element of $elements) {
+                    $element = $($element);
+
+                }
+            }
+
+            function removeButton($element){
+                var $removeButton = $('<button type="submit">Supprimer le visiteur</button>');
+
+                $element.append(
+                    $removeButton,
+                );
+
+                $removeButton.on('click', function (e) {
+                    e.preventDefault();
+
+                    $(this).parent().remove();
+
+                });
+            }
+        </script>
 
 {% endblock %}

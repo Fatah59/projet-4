@@ -1,7 +1,58 @@
+.jumbotron {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-image: url(../image/louvre.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    margin-bottom: 0px;
+}
 
-.toto {
-    width: 100% !important;
-    height: 100vh !important;
+.jumbotron h1 {
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.gradient {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: -moz-linear-gradient(-45deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: -webkit-linear-gradient(-45deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3000000', endColorstr='#b3000000', GradientType=1);
+}
+
+.header {
+    padding-top: 150px;
+    padding-bottom: 150px;
+}
+
+.navbar {
+    background-color: #D5D6D2;
+}
+
+.section {
+    padding: 3rem 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    color: #000;
+    background-color: #D5D6D2;
+    border-color: #D5D6D2;
+    border: 2px solid #000;
 }
 
 
+.btn-primary:hover {
+    color: #fff;
+    background-color: #000;
+    border-color: #fff;
+}

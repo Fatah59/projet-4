@@ -4,11 +4,30 @@
 
 {% block body %}
 
-    <div class="container">
-        <h2>Formulaire de contact</h2>
+    <section class="section">
+        <div class="container">
+            <h2>Formulaire de contact</h2>
+
+            {{ form_start(contactForm) }}
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    {{ form_widget(contactForm) }}
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-11">
+
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                    {{ form_end(contactForm) }}
+                </div>
+            </div>
 
 
 
-    </div>
+        </div>
+
+    </section>
 
 {% endblock %}
