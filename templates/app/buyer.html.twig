@@ -14,17 +14,17 @@
 
                 {{ form_start(buyerForm) }}
                 <div class="col-sm-12">
-                    {{ form_row(buyerForm.lastName) }}
+                    {{ form_row(buyerForm.buyer.lastName) }}
                 </div>
 
 
-                {{ form_row(buyerForm.name) }}
-                {{ form_row(buyerForm.email) }}
+                {{ form_row(buyerForm.buyer.name) }}
+                {{ form_row(buyerForm.buyer.email) }}
 
                 <h2>Adresse de facturation :</h2>
-                {{ form_row(buyerForm.adress) }}
-                {{ form_row(buyerForm.zipcode) }}
-                {{ form_row(buyerForm.city) }}
+                {{ form_row(buyerForm.buyer.adress) }}
+                {{ form_row(buyerForm.buyer.zipcode) }}
+                {{ form_row(buyerForm.buyer.city) }}
             </div>
 
             <div class="row">

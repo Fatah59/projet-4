@@ -37,11 +37,16 @@
         {{ parent() }}
 
         <script>
+
             var $collections = $('.collection');
 
             for (var $collection of $collections) {
                 $collection = $($collection);
                 var $elements = $collection.find('fieldset');
+                for ($element of $elements) {
+                    $element = $ ($element);
+                    removeButton($element);
+                }
 
                 var $legends = $collection.find('legend');
                 for ($legend of $legends){
