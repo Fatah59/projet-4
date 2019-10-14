@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Form\BuyerOrderType;
 use App\Form\ContactType;
 use App\Entity\Order;
 use App\Form\OrderType;
@@ -11,6 +12,7 @@ use App\Form\VisitorsType;
 use App\Entity\Buyer;
 use App\Form\BuyerType;
 use App\Service\CartService;
+use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,7 +104,7 @@ class AppController extends AbstractController
             return $this->redirectToRoute('/visitors');
         }
 
-        $buyerForm = $this->createForm(BuyerType::class, $cart);
+        $buyerForm = $this->createForm(BuyerOrderType::class, $cart);
         $buyerForm->handleRequest($request);
         if ($buyerForm->isSubmitted() && $buyerForm->isValid()) {
             $this->cartService->save($cart);
@@ -120,10 +122,24 @@ class AppController extends AbstractController
      * @return Response
      */
 
-    public function payAction(Request $request)
+    public function payAction(Request $request, StripeService $stripeService)
     {
-        return $this->render('app/pay.html.twig');
+        $cart = $this->cartService->get();
+
+        if (!$cart) {
+
+            return $this->redirectToRoute('/buyer');
+        }
+         $this->cartService->updatePrices($cart);
+
+        $session = $stripeService->createSession($cart);
+
+        return $this->render('app/pay.html.twig', [
+            'session' => $session,
+            'stripePublishableKey' => $stripeService->getStripePublishableKey()
+        ]);
     }
+
 
     /**
      * @Route ("/contact", name="contact")
@@ -139,7 +155,9 @@ class AppController extends AbstractController
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
 
 
-            return $this->redirectToRoute('home');
+            $this->addFlash('success', 'Votre message a bien été envoyé');
+
+            return $this->redirectToRoute('contact');
         }
 
         return $this->render('pages/contact.html.twig', [
@@ -158,5 +176,24 @@ class AppController extends AbstractController
         return $this->render('pages/informations.html.twig');
     }
 
+    /**
+     * @Route ("/pay/success", name="payment_success")
+     * @return Response
+     */
+
+    public function paymentSuccess(Request $request)
+    {
+        return $this->json('success');
+    }
+
+    /**
+     * @Route ("/pay/cancel", name="payment_cancel")
+     * @return Response
+     */
+
+    public function paymentCancel(Request $request)
+    {
+        return $this->json('cancel');
+    }
 
 }

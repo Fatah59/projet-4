@@ -45,7 +45,12 @@ class Visitor
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $rate;
+    private $reducedPrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $PriceCents;
 
 
     public function getId(): ?int
@@ -114,14 +119,26 @@ class Visitor
         return $this;
     }
 
-    public function getRate(): ?bool
+    public function getReducedPrice(): ?bool
     {
-        return $this->rate;
+        return $this->reducedPrice;
     }
 
-    public function setRate(?bool $rate): self
+    public function setReducedPrice(?bool $reducedPrice): self
     {
-        $this->rate = $rate;
+        $this->reducedPrice = $reducedPrice;
+
+        return $this;
+    }
+
+    public function getPriceCents(): ?int
+    {
+        return $this->PriceCents;
+    }
+
+    public function setPriceCents(int $PriceCents): self
+    {
+        $this->PriceCents = $PriceCents;
 
         return $this;
     }

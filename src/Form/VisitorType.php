@@ -31,7 +31,7 @@ class VisitorType extends AbstractType
                 'label' => 'Pays',
                 'placeholder'=> 'Choisissez votre pays',
             ])
-            ->add('rate', CheckboxType::class, [
+            ->add('reducedPrice', CheckboxType::class, [
                 'label' => 'tarif réduit',
                 'required' => false,
             ]);

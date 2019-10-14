@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <button type="submit" class="btn btn-primary">Payer ma commande</button>
+                        <button id="pay" type="button" class="btn btn-primary">Payer ma commande</button>
 
                     </div>
                 </div>
@@ -46,4 +46,22 @@
 
     </section>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $('#pay').on('click', function (e) {
+            e.preventDefault();
+
+            var stripe = Stripe('{{ stripePublishableKey }}');
+
+            stripe.redirectToCheckout({
+                sessionId: '{{ session.id }}',
+            }).then(function (result) {
+                console.log('Erreur');
+            });
+        });
+    </script>
 {% endblock %}

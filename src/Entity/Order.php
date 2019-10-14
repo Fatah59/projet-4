@@ -49,6 +49,12 @@ class Order
      */
     private $visitors;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Buyer", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $buyer;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,6 +135,18 @@ class Order
                 $visitor->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBuyer(): ?Buyer
+    {
+        return $this->buyer;
+    }
+
+    public function setBuyer(Buyer $buyer): self
+    {
+        $this->buyer = $buyer;
 
         return $this;
     }
