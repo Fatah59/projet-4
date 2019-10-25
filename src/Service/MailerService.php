@@ -25,31 +25,27 @@ class MailerService
 
     public function mailAction(Contact $contact)
     {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
+        $message = (new \Swift_Message('Vous avez un nouveau message !'))
+            ->setFrom($contact->getEmail())
+            ->setTo('projet4@derradjfatah.com')
             ->setBody(
-                $this->renderView(
+                $this->twig->render(
                 // templates/emails/registration.html.twig
-                    'emails/registration.html.twig',
-                    ['name' => $name]
-                ),
-                'text/html'
-            )
+                    'email/message.html.twig', [
+                        'contact' => $contact
+                    ]),
+                'text/html');
 
             // you can remove the following code if you don't define a text version for your emails
-            ->addPart(
-                $this->renderView(
-                // templates/emails/registration.txt.twig
-                    'emails/registration.txt.twig',
-                    ['name' => $name]
-                ),
-                'text/plain'
-            )
-        ;
+//           ->addPart(
+//                $this->renderView(
+//                // templates/emails/registration.txt.twig
+//                    'templates/email/message.txt.twig'
+//
+//                ),
+//                'text/plain'
+//            );
 
-        $mailer->send($message);
-
-        return $this->render(...);
-
+        $this->mailer->send($message);
+    }
 }

@@ -12,6 +12,7 @@ use App\Form\VisitorsType;
 use App\Entity\Buyer;
 use App\Form\BuyerType;
 use App\Service\CartService;
+use App\Service\MailerService;
 use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,14 +147,14 @@ class AppController extends AbstractController
      * @return Response
      */
 
-    public function contactAction(Request $request)
+    public function contactAction(Request $request, MailerService $mailerService)
     {
         $contact = new Contact();
         $contactForm = $this->createForm(ContactType::class, $contact);
         $contactForm->handleRequest($request);
 
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
-
+            $mailerService->mailAction($contact);
 
             $this->addFlash('success', 'Votre message a bien été envoyé');
 
